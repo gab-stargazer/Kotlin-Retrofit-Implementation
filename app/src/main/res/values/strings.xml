@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Rick And Morty API</string>
+    <string name="first_seen">First Seen In :</string>
+    <string name="last_known">Last Known Location :</string>
+    <string name="previous">Prev</string>
+    <string name="next">Next</string>
+</resources>

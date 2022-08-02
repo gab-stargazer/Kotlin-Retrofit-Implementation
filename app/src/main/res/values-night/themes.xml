@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Theme.RickAndMortyAPI" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimaryDark">@color/dark_gray</item>
+        <item name="android:navigationBarColor">@color/dark_gray</item>
+    </style>
+</resources>
