@@ -1,11 +1,12 @@
 package com.example.rickandmortyapi.di
 
 import com.example.rickandmortyapi.data.api.CharactersApi
-import com.example.rickandmortyapi.repository.CharactersRepository
-import com.example.rickandmortyapi.repository.CharactersRepositoryImpl
+import com.example.rickandmortyapi.data.repository.CharactersRepository
+import com.example.rickandmortyapi.data.repository.CharactersRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -38,6 +39,8 @@ object AppModule {
     //  Providing Repository Class with API
     @Provides
     @Singleton
-    fun provideCharactersRepository(charactersApi : CharactersApi) : CharactersRepository =
+    fun provideCharactersRepository(
+        charactersApi : CharactersApi
+    ) : CharactersRepository =
         CharactersRepositoryImpl(charactersApi)
 }

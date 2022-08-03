@@ -6,11 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapi.data.model.Info
 import com.example.rickandmortyapi.data.model.Result
-import com.example.rickandmortyapi.repository.CharactersRepository
+import com.example.rickandmortyapi.data.repository.CharactersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,25 +18,21 @@ class MainViewmodel @Inject constructor(
 ) : ViewModel() {
 
     val errorResponse : MutableLiveData<String> = MutableLiveData()
-
     private val info = MutableLiveData<Info>()
 
-    private var _currentPage = 1
     val currentPage : MutableLiveData<Int> = MutableLiveData()
     private val _characters = MutableLiveData<List<Result>>()
     val characters : LiveData<List<Result>> = _characters
 
     init {
-        currentPage.value = _currentPage
+        currentPage.value = 1
         viewModelScope.launch(Dispatchers.IO) {
-            val responseAPI = charactersRepository.getCharacters(_currentPage.toString())
-            if (responseAPI.isSuccessful && responseAPI.body()!!.results.isNotEmpty()) {
-                withContext(Dispatchers.Main) {
-                    _characters.value = responseAPI.body()!!.results
-                    info.value = responseAPI.body()!!.info
-                }
+            val responseAPI = charactersRepository.getCharacters(currentPage.value!!.toString())
+            if (responseAPI.info != null && responseAPI.results != null) {
+                info.postValue(responseAPI.info)
+                _characters.postValue(responseAPI.results)
             } else {
-                errorResponse.value = "Terjadi kegagalan"
+                errorResponse.postValue("Terjadi kegagalan")
             }
         }
     }
@@ -46,37 +41,33 @@ class MainViewmodel @Inject constructor(
         if (info.value!!.next.isEmpty()) {
             errorResponse.value = "Anda berada pada halaman akhir"
         } else {
-            withContext(Dispatchers.IO) {
-                val responseAPI = charactersRepository.getCharacters((_currentPage + 1).toString())
-                if (responseAPI.isSuccessful && responseAPI.body()!!.results.isNotEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        _characters.value = responseAPI.body()!!.results
-                        info.value = responseAPI.body()!!.info
-                        _currentPage += 1
-                        currentPage.value = _currentPage
-                    }
+            viewModelScope.launch(Dispatchers.IO) {
+                val page = currentPage.value!! + 1
+                val responseAPI = charactersRepository.getCharacters(page.toString())
+                if (responseAPI.info != null && responseAPI.results != null) {
+                    currentPage.postValue(page)
+                    _characters.postValue(responseAPI.results)
+                    info.postValue(responseAPI.info)
                 } else {
-                    errorResponse.value = "Terjadi kegagalan"
+                    errorResponse.postValue("Terjadi kegagalan")
                 }
             }
         }
     }
 
     fun previousPage() = viewModelScope.launch {
-        if (_currentPage == 1) {
+        if (currentPage.value!! == 1) {
             errorResponse.value = "Anda berada pada halaman awal"
         } else {
-            withContext(Dispatchers.IO) {
-                val responseAPI = charactersRepository.getCharacters((_currentPage - 1).toString())
-                if (responseAPI.isSuccessful && responseAPI.body()!!.results.isNotEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        _characters.value = responseAPI.body()!!.results
-                        info.value = responseAPI.body()!!.info
-                        _currentPage = _currentPage - 1
-                        currentPage.value = _currentPage
-                    }
+            viewModelScope.launch(Dispatchers.IO) {
+                val page = currentPage.value!! - 1
+                val responseAPI = charactersRepository.getCharacters(page.toString())
+                if (responseAPI.info != null && responseAPI.results != null) {
+                    _characters.postValue(responseAPI.results)
+                    info.postValue(responseAPI.info)
+                    currentPage.postValue(page)
                 } else {
-                    errorResponse.value = "Terjadi kegagalan"
+                    errorResponse.postValue("Terjadi kegagalan")
                 }
             }
         }

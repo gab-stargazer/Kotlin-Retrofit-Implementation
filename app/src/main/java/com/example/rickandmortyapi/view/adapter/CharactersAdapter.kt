@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.rickandmortyapi.R
 import com.example.rickandmortyapi.data.model.Result
 import com.example.rickandmortyapi.databinding.ListCharacterItemBinding
@@ -35,8 +34,9 @@ class CharactersAdapter :
             binding.apply {
                 Glide.with(itemView)
                     .load(characters.image)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder)
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(ivCharacter)
 
                 tvCharacterName.text = characters.name

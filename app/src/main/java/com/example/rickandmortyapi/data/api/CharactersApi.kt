@@ -8,6 +8,7 @@ import retrofit2.http.Query
 // Dagger Hilt Will Inject this API Interface to other class that depends on it
 interface CharactersApi {
 
+    // Base URL from the API Provider
     companion object {
         const val BASE_URL = "https://rickandmortyapi.com/api/"
     }

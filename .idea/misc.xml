@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kamil/Documents/Kotlin/RickAndMortyAPI/app/src/main/res/font/sen.xml" value="0.1" />
+        <entry key="..\:/Users/kamil/Documents/Kotlin/RickAndMortyAPI/app/src/main/res/font/sen_bold.xml" value="0.1" />
+        <entry key="..\:/Users/kamil/Documents/Kotlin/RickAndMortyAPI/app/src/main/res/layout/activity_character_page.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/kamil/Documents/Kotlin/RickAndMortyAPI/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/kamil/Documents/Kotlin/RickAndMortyAPI/app/src/main/res/layout/list_character_item.xml" value="0.5" />
       </map>

@@ -3,6 +3,7 @@ package com.example.rickandmortyapi.view.ui
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmortyapi.databinding.ActivityMainBinding
 import com.example.rickandmortyapi.view.adapter.CharactersAdapter
 import com.example.rickandmortyapi.viewmodel.MainViewmodel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
             viewModel.errorResponse.observe(this@MainActivity) {
                 if (it.isNotEmpty()) {
-                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it.toString(), Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
                     viewModel.clearResponse()
                 }
             }
